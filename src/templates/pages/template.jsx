@@ -21,8 +21,18 @@ const templateMachine = Machine({
     },
     saving: {
       on: {
-        cancel: "viewing",
-        finished: "viewing"
+        cancel: {
+          target: "viewing",
+          actions: ["displayCancelMessage"]
+        },
+        complete: {
+          target: "viewing",
+          actions: ["displaySavedMessage"]
+        },
+        failure: {
+          target: "editing",
+          actions: ["displayErrorMessage"]
+        }
       }
     }
   }
@@ -34,7 +44,6 @@ export class TemplatePage extends React.Component {
   };
 
   service = interpret(templateMachine).onTransition(current => {
-    console.log(current);
     this.setState({ current })
   });
 
@@ -51,7 +60,7 @@ export class TemplatePage extends React.Component {
     this.service.send("save");
     return new Promise(resolve => {
       setTimeout(() => {
-        this.service.send("finished");
+        this.service.send("complete");
         resolve();
       }, 3000);
     });
