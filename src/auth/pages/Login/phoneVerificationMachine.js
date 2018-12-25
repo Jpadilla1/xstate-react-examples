@@ -1,6 +1,6 @@
 import { Machine } from "xstate";
 
-const enterPhoneNumberMachine = {
+const enterPhoneNumberMachine = (parentKey) => ({
   initial: "idle",
   states: {
     idle: {
@@ -11,7 +11,7 @@ const enterPhoneNumberMachine = {
     pending: {
       on: {
         failed: "error",
-        success: "#phone.phoneAccepted"
+        success: `#${parentKey}.phoneAccepted`
       }
     },
     error: {
@@ -20,9 +20,9 @@ const enterPhoneNumberMachine = {
       }
     }
   }
-};
+});
 
-const verificationCodeMachine = {
+const verificationCodeMachine = (parentKey) => ({
   initial: "idle",
   states: {
     idle: {
@@ -33,7 +33,7 @@ const verificationCodeMachine = {
     pending: {
       on: {
         failed: "error",
-        success: "#phone.codeAccepted"
+        success: `#${parentKey}.codeAccepted`
       }
     },
     error: {
@@ -42,20 +42,22 @@ const verificationCodeMachine = {
       }
     }
   }
-};
+});
+
+const KEY = "phone";
 
 export const phoneVerificationMachineFactory = (parentKey, onFinishedEvent) => Machine({
-  key: "phone",
+  key: KEY,
   initial: "enterPhone",
   states: {
     enterPhone: {
-      ...enterPhoneNumberMachine
+      ...enterPhoneNumberMachine(KEY)
     },
     enterCode: {
       on: {
         resend: "enterPhone"
       },
-      ...verificationCodeMachine
+      ...verificationCodeMachine(KEY)
     },
     finished: {
       '': `#${parentKey}.${onFinishedEvent}`
