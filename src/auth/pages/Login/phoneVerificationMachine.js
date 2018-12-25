@@ -44,7 +44,7 @@ const verificationCodeMachine = (parentKey) => ({
   }
 });
 
-const KEY = "phone";
+const KEY = "phoneVerification";
 
 export const phoneVerificationMachineFactory = (parentKey, onFinishedEvent) => Machine({
   key: KEY,
