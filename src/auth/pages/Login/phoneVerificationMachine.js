@@ -1,5 +1,3 @@
-import { Machine } from "xstate";
-
 const enterPhoneNumberMachine = (parentKey) => ({
   initial: "idle",
   states: {
@@ -46,7 +44,7 @@ const verificationCodeMachine = (parentKey) => ({
 
 const KEY = "phoneVerification";
 
-export const phoneVerificationMachineFactory = (parentKey, onFinishedEvent) => Machine({
+export const phoneVerificationMachineFactory = (parentKey, onFinishedEvent) => ({
   key: KEY,
   initial: "enterPhone",
   states: {
