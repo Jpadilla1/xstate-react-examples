@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { ItemPage } from './users/pages/item';
-import data from './data';
+import { Login } from './auth/pages/Login'
 import './App.css';
 
 class App extends Component {
@@ -8,7 +7,7 @@ class App extends Component {
     return (
       <div className="App">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
-        <ItemPage item={data.users[0]} />
+        <Login />
       </div>
     );
   }
